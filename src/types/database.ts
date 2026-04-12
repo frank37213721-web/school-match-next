@@ -94,4 +94,4 @@ export interface Database {
 }
 
 // Export types for convenience
-export type { School as SchoolType, Course as CourseType, Match as MatchType, SchoolRegistry as SchoolRegistryType }
+export type { School as SchoolType, Course as CourseRow, Match as MatchType, SchoolRegistry as SchoolRegistryType }
