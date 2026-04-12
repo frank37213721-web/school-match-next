@@ -3,12 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { signOut } from '@/lib/auth-actions'
 
-const menuItems = [
-  { name: '課程大廳', href: '/lobby', icon: '🏛️' },
-  { name: '學校基本資料', href: '/school-info', icon: '🏫' },
-  { name: '新增/修改課程', href: '/courses', icon: '📚' },
-  { name: '登出', href: '/logout', icon: '🚪' }
+const navItems = [
+  { name: '課程大廳',     href: '/lobby',       icon: '🏛️' },
+  { name: '學校基本資料', href: '/school-info',  icon: '🏫' },
+  { name: '新增/修改課程', href: '/courses',     icon: '📚' },
+  { name: '學校登入',     href: '/login',        icon: '🔑' },
 ]
 
 export default function Sidebar() {
@@ -20,13 +21,13 @@ export default function Sidebar() {
       <div className="p-6">
         <h1 className="text-2xl font-semibold text-gray-900">課程匯流平台</h1>
       </div>
-      
+
       <nav className="flex-1 px-4">
         <ul className="space-y-1">
-          {menuItems.map((item) => {
-            const isActive = pathname === item.href
+          {navItems.map((item) => {
+            const isActive  = pathname === item.href
             const isHovered = hoveredItem === item.name
-            
+
             return (
               <li key={item.name}>
                 <Link
@@ -34,8 +35,8 @@ export default function Sidebar() {
                   className={`
                     flex items-center px-4 py-3 text-sm font-medium rounded-lg
                     transition-all duration-200 ease-in-out
-                    ${isActive 
-                      ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700' 
+                    ${isActive
+                      ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
                       : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                     }
                     ${isHovered && !isActive ? 'border-l-4 border-gray-300' : ''}
@@ -53,9 +54,23 @@ export default function Sidebar() {
           })}
         </ul>
       </nav>
-      
-      <div className="p-4 border-t border-gray-200">
-        <div className="text-xs text-gray-500 text-center">
+
+      {/* Sign-out at the bottom */}
+      <div className="px-4 pb-4 border-t border-gray-200 pt-4">
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg
+              text-gray-700 hover:bg-gray-100 hover:text-gray-900
+              transition-all duration-200 ease-in-out"
+          >
+            <span className="mr-3 text-lg">🚪</span>
+            <span style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+              登出
+            </span>
+          </button>
+        </form>
+        <div className="text-xs text-gray-500 text-center mt-3">
           Version 1.0.0
         </div>
       </div>
