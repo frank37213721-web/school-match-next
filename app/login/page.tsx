@@ -19,6 +19,7 @@ export default function LoginPage() {
   // Registration form state
   const [schoolCode, setSchoolCode] = useState('')
   const [schoolName, setSchoolName] = useState('')
+  const [schoolPhone, setSchoolPhone] = useState('')
   const [regPassword, setRegPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [contactPerson, setContactPerson] = useState('')
@@ -88,22 +89,65 @@ export default function LoginPage() {
       return
     }
 
-    try {
-      // TODO: Implement actual registration logic
-      // 1. Validate school code exists in school_registry
-      // 2. Hash password with bcrypt
-      // 3. Insert into schools table
-      // 4. Create session and redirect
-      
-      setTimeout(() => {
-        setIsLoading(false)
-        setMessage('註冊功能開發中...')
-        setMessageType('error')
-      }, 1000)
-    } catch (error) {
+    if (!schoolName) {
+      setMessage('請選擇有效的學校代碼')
+      setMessageType('error')
       setIsLoading(false)
+      return
+    }
+
+    if (!schoolPhone) {
+      setMessage('請輸入學校電話')
+      setMessageType('error')
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      // Import auth functions
+      const { createSchoolAccount } = await import('@/lib/auth')
+      
+      // Create school account
+      const result = await createSchoolAccount({
+        name: schoolName,
+        phone: schoolPhone,
+        password: regPassword,
+        contact_person: contactPerson,
+        extension: extension,
+        director_email: directorEmail,
+        principal_email: principalEmail,
+        role: 'user'
+      })
+
+      if (result.success) {
+        setMessage('註冊成功！請使用學校電話登入。')
+        setMessageType('success')
+        
+        // Reset form
+        setSchoolCode('')
+        setSchoolName('')
+        setSchoolPhone('')
+        setRegPassword('')
+        setConfirmPassword('')
+        setContactPerson('')
+        setExtension('')
+        setDirectorEmail('')
+        setPrincipalEmail('')
+        
+        // Switch to login tab after successful registration
+        setTimeout(() => {
+          setIsLogin(true)
+        }, 2000)
+      } else {
+        setMessage(result.error || '註冊失敗，請重試')
+        setMessageType('error')
+      }
+    } catch (error) {
+      console.error('Registration error:', error)
       setMessage('註冊失敗，請重試')
       setMessageType('error')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -239,6 +283,21 @@ export default function LoginPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-gray-100"
                 placeholder="學校名稱將自動帶入"
                 readOnly
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="schoolPhone" className="block text-sm font-medium text-gray-700 mb-2">
+                學校電話
+              </label>
+              <input
+                id="schoolPhone"
+                type="tel"
+                value={schoolPhone}
+                onChange={(e) => setSchoolPhone(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                placeholder="請輸入學校電話 (將用於登入)"
                 required
               />
             </div>

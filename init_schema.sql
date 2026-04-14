@@ -23,9 +23,13 @@ CREATE TABLE schools (
     name VARCHAR(255) NOT NULL,
     role user_role NOT NULL DEFAULT 'user',
     email VARCHAR(255),
-    phone VARCHAR(50),
+    phone VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     address TEXT,
     contact_person VARCHAR(255),
+    extension VARCHAR(20),
+    director_email VARCHAR(255),
+    principal_email VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
