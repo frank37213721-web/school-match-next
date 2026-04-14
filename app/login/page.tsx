@@ -138,6 +138,7 @@ export default function LoginPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Registration form submitted')
     setIsLoading(true)
     setMessage('')
 
@@ -177,6 +178,7 @@ export default function LoginPage() {
     }
 
     try {
+      console.log('Attempting to create school account...')
       const { createSchoolAccount } = await import('@/lib/auth')
       
       const result = await createSchoolAccount({
@@ -189,6 +191,8 @@ export default function LoginPage() {
         principal_email: principalEmail,
         role: 'user'
       })
+
+      console.log('Registration result:', result)
 
       if (result.success) {
         const defaultPassword = schoolPhone.slice(-4)
@@ -217,6 +221,7 @@ export default function LoginPage() {
         setMessageType('error')
       }
     } catch (error) {
+      console.error('Registration error:', error)
       setMessage('註冊失敗，請重試')
       setMessageType('error')
     } finally {
@@ -226,17 +231,21 @@ export default function LoginPage() {
 
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Admin login form submitted')
     setIsLoading(true)
     setMessage('')
 
     try {
+      console.log('Attempting admin login...')
       // TODO: Implement actual admin login logic
       setTimeout(() => {
+        console.log('Admin login completed')
         setMessage('管理員登入功能開發中...')
         setMessageType('error')
         setIsLoading(false)
       }, 1000)
     } catch (error) {
+      console.error('Admin login error:', error)
       setMessage('登入失敗，請重試')
       setMessageType('error')
       setIsLoading(false)
@@ -261,7 +270,10 @@ export default function LoginPage() {
         {/* Tab Navigation */}
         <div className="flex mb-8">
           <button
-            onClick={() => setAuthMode('school-login')}
+            onClick={() => {
+              console.log('Switching to school login')
+              setAuthMode('school-login')
+            }}
             className={`flex-1 py-3 px-4 text-center font-medium rounded-l-lg transition-colors ${
               authMode === 'school-login'
                 ? 'bg-blue-600 text-white'
@@ -271,7 +283,10 @@ export default function LoginPage() {
             🔑 學校帳號登入
           </button>
           <button
-            onClick={() => setAuthMode('register')}
+            onClick={() => {
+              console.log('Switching to register')
+              setAuthMode('register')
+            }}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors border-x border-gray-300 ${
               authMode === 'register'
                 ? 'bg-blue-600 text-white'
@@ -281,7 +296,10 @@ export default function LoginPage() {
             📝 註冊學校帳號
           </button>
           <button
-            onClick={() => setAuthMode('admin-login')}
+            onClick={() => {
+              console.log('Switching to admin login')
+              setAuthMode('admin-login')
+            }}
             className={`flex-1 py-3 px-4 text-center font-medium rounded-r-lg transition-colors ${
               authMode === 'admin-login'
                 ? 'bg-blue-600 text-white'
@@ -516,6 +534,13 @@ export default function LoginPage() {
 
             {termsAgreed && scrolledToBottom && (
               <form onSubmit={handleRegister} className="space-y-6">
+                {/* Debug info */}
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                  <p className="text-sm text-yellow-800">
+                    Debug: Form is ready. Terms agreed: {termsAgreed.toString()}, 
+                    Scrolled to bottom: {scrolledToBottom.toString()}
+                  </p>
+                </div>
                 {/* School Selection */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">1. 選擇學校名稱</h3>
@@ -736,6 +761,12 @@ export default function LoginPage() {
         {/* Admin Login Tab */}
         {authMode === 'admin-login' && (
           <form onSubmit={handleAdminLogin} className="space-y-6">
+            {/* Debug info */}
+            <div className="p-3 bg-purple-50 border border-purple-200 rounded">
+              <p className="text-sm text-purple-800">
+                Debug: Admin login form is ready. Current mode: {authMode}
+              </p>
+            </div>
             <h2 className="text-xl font-semibold text-gray-900 mb-4">🔐 管理人員登入</h2>
             
             <div>
