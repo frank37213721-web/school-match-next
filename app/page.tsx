@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
@@ -8,15 +10,8 @@ export default function Home() {
         <p className="text-xl text-gray-600 mb-8 leading-relaxed">
           連結學校，分享知識，創造無限可能
         </p>
-        
-        {/* Course Lobby Button */}
-        <div className="mb-6">
-          <button className="w-full max-w-md mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-2xl border-[1.5px] border-blue-700 transition-colors duration-200 text-lg">
-            🏛️ 課程大廳
-          </button>
-        </div>
 
-        <div className="bg-gray-50 border-[1.5px] border-[#1a1a1a] rounded-2xl p-8 mb-6">
+        <div className="bg-gray-50 border-[1.5px] border-[#1a1a1a] rounded-2xl p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             歡迎來到未來的教育生態系
           </h2>
@@ -26,11 +21,21 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Sign in/Sign up Button */}
-        <div>
-          <button className="w-full max-w-md mx-auto block bg-white hover:bg-gray-50 text-gray-900 font-semibold py-4 px-8 rounded-2xl border-[1.5px] border-[#1a1a1a] transition-colors duration-200 text-lg">
-            🔑 Sign in / Sign up
-          </button>
+        {/* Buttons at bottom */}
+        <div className="space-y-4">
+          {/* Course Lobby Button */}
+          <Link href="/lobby">
+            <button className="w-full max-w-md mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-2xl border-[1.5px] border-blue-700 transition-colors duration-200 text-lg">
+              🏛️ 課程大廳
+            </button>
+          </Link>
+
+          {/* Sign in/Sign up Button */}
+          <Link href="/login">
+            <button className="w-full max-w-md mx-auto block bg-white hover:bg-gray-50 text-gray-900 font-semibold py-4 px-8 rounded-2xl border-[1.5px] border-[#1a1a1a] transition-colors duration-200 text-lg">
+              🔑 學校帳號登入
+            </button>
+          </Link>
         </div>
       </div>
     </div>
